@@ -7,23 +7,31 @@ class TargetDetector:
 		self.approx = None
 		self.contr = None
 		self.HSV = None
+		self.origImg = None
+		self.targetApprox = None
+		self.shape = "Nothing"
 	def threshold(self, originalImage):
-		self.HSV = cv2.cvtColor(originialImage, cv2.COLOR_BGR2HSV)
-		THRESHOLD_MIN = np.array([0,0,0], np.uint8)
-		THRESHOLD_MAX = np.array([255,100,100]. np.uint8)
+		self.origImg = originalImage
+		self.HSV = cv2.cvtColor(self.origImg, cv2.COLOR_BGR2HSV)
+		THRESHOLD_MIN = np.array([80,30,60], np.uint8)
+		THRESHOLD_MAX = np.array([255,255,255], np.uint8)
 		self.threshed = cv2.inRange(self.HSV, THRESHOLD_MIN, THRESHOLD_MAX)
-		cv2.imshow("Threshed Image", self.threshed)
-	def contour(self, threshedImg, originalImg):
+	def contour(self):
 		count = -1
-		images, contours, hierarchy = cv2.findContours(threshedImg, cv2.RETR, cv2.CHAIN_APPROX_SIMPLE)
-		for cont in contour:
+		images, contours, hierarchy = cv2.findContours(self.threshed, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
+		for cont in contours:
 			count = count + 1
-			self.approx = cv2.approxPolyDP(cont, 0.1*cv2.arcLength(cont, True), True)
-			area = cv2.contourArea(approx)
-			if (len(self.approx) >= 4 and area > 500):
-				cv2.drawContours(originalImg, contours, count, (255,10,255), 5)
-		cv2.imshow("Contoured Image", originalImg)
-		self.contr = originalImg
+			self.approx = cv2.approxPolyDP(cont, 0.03 * cv2.arcLength(cont, True), True)
+			area = cv2.contourArea(self.approx)
+			if (len(self.approx) >= 4 and area > 2000):
+				self.targetApprox = self.approx
+			#	self.shape = "Plus"
+				cv2.drawContours(self.origImg, contours, count, (255,10,255), 5)
+			#else:
+			#	self.shape = "Rectangle"
+		self.contr = self.origImg
+	def getTargetApprox(self):
+		return self.targetApprox
 	def getApprox(self):
 		return self.approx
 	def getContour(self):
@@ -32,3 +40,5 @@ class TargetDetector:
 		return self.HSV
 	def getThreshed(self):
 		return self.threshed
+	def getShape(self):
+		return self.shape 

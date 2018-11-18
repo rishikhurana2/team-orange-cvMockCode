@@ -7,7 +7,7 @@ class TargetProcessor:
 		self.dist = 0
 		self.realRectWidth = 7
 		self.realPlusWidth = 6.5
-		self.focalLength = 720
+		self.focalLength = 700
 	def calculate(self, width, height, centerX, centerY, HSV, shape):
 		xOffset = HSV.shape[0] - centerX
 		yOffset = HSV.shape[1] - centerY
