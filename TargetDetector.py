@@ -25,15 +25,10 @@ class TargetDetector:
 			area = cv2.contourArea(self.approx)
 			if (len(self.approx) >= 4 and area > 2000):
 				self.targetApprox = self.approx
-			#	self.shape = "Plus"
 				cv2.drawContours(self.origImg, contours, count, (255,10,255), 5)
-			#else:
-			#	self.shape = "Rectangle"
 		self.contr = self.origImg
 	def getTargetApprox(self):
 		return self.targetApprox
-	def getApprox(self):
-		return self.approx
 	def getContour(self):
 		return self.contr
 	def getHSV(self):

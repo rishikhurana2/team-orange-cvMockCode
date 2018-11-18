@@ -19,7 +19,6 @@ while(True):
 		continue
 	detector.threshold(frame)
 	detector.contour()
-	#approx = detector.getApprox()
 	targetApprox = detector.getTargetApprox()
 	width = target.getWidth(targetApprox)
 	height = target.getHeight(targetApprox)
